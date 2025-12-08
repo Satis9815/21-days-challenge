@@ -64,9 +64,6 @@ export function LeapYear() {
           <div
             className={`mt-6 p-4 rounded-lg border ${result ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800"}`}
           >
-            <p className="text-sm font-medium">
-              {result ? "text-green-700 dark:text-green-200" : "text-red-700 dark:text-red-200"}
-            </p>
             <p
               className={`text-3xl font-bold ${result ? "text-green-600 dark:text-green-300" : "text-red-600 dark:text-red-300"}`}
             >
