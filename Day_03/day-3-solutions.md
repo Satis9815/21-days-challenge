@@ -1,4 +1,20 @@
-//1.Left Aligned Increasing Triangle
+# ⭐ Star Pattern & Table Practice Solutions with Examples
+
+---
+
+## 1. Print a left-aligned triangle where stars increase row by row.
+
+### Example (Input: 5)
+
+### Output:
+
+    *
+    **
+    ***
+    ****
+    *****
+
+```js
 function leftAlignedIncreasingTriangle(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -8,9 +24,24 @@ function leftAlignedIncreasingTriangle(row) {
     console.log(star);
   }
 }
-// leftAlignedIncreasingTriangle(5)
+leftAlignedIncreasingTriangle(5);
+```
 
-//2. Left Aligned Decreasing Triangle
+---
+
+## 2. Print a left-aligned triangle where stars decrease row by row.
+
+### Example (Input: 5)
+
+### Output:
+
+    *****
+    ****
+    ***
+    **
+    *
+
+```js
 function leftAlignedDecreasingTriangle(row) {
   for (let i = row; i >= 1; i--) {
     let star = "";
@@ -20,9 +51,24 @@ function leftAlignedDecreasingTriangle(row) {
     console.log(star);
   }
 }
-// leftAlignedDecreasingTriangle(7)
+leftAlignedDecreasingTriangle(5);
+```
 
-//3.Right Aligned Increasing Triangle
+---
+
+## 3. Print a right-aligned triangle where stars increase upward.
+
+### Example (Input: 5)
+
+### Output:
+
+        *
+       **
+      ***
+     ****
+    *****
+
+```js
 function rigtAlignedIncreasingTriangle(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -36,10 +82,24 @@ function rigtAlignedIncreasingTriangle(row) {
     console.log(space + star);
   }
 }
-// rigtAlignedIncreasingTriangle(5);
+rigtAlignedIncreasingTriangle(5);
+```
 
-//4.Right Aligned Decreasing Triangle
+---
 
+## 4. Print a right-aligned triangle where stars decrease downward.
+
+### Example (Input: 5)
+
+### Output:
+
+    *****
+     ****
+      ***
+       **
+        *
+
+```js
 function rightAlignedDecreasingTriangle(row) {
   for (let i = row; i >= 1; i--) {
     let star = "";
@@ -52,14 +112,27 @@ function rightAlignedDecreasingTriangle(row) {
     for (let s = 1; s <= row - i; s++) {
       space += " ";
     }
-
     console.log(space + star);
   }
 }
+rightAlignedDecreasingTriangle(5);
+```
 
-// rightAlignedDecreasingTriangle(5);
+---
 
-//5.Simple Centered Pyramid
+## 5. Print a centered pyramid symbol pattern.
+
+### Example (Input: 5)
+
+### Output:
+
+        *
+       ***
+      *****
+     *******
+    *********
+
+```js
 function printCenteredPyramid(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -73,9 +146,24 @@ function printCenteredPyramid(row) {
     console.log(spaces + star);
   }
 }
-// printCenteredPyramid(5)
+printCenteredPyramid(5);
+```
 
-//6.Inverted Pyramid
+---
+
+## 6. Print an upside-down centered pyramid.
+
+### Example (Input: 5)
+
+### Output:
+
+    *********
+     *******
+      *****
+       ***
+        *
+
+```js
 function printInvertedPyramid(row) {
   for (let i = row; i >= 1; i--) {
     let star = "";
@@ -89,9 +177,24 @@ function printInvertedPyramid(row) {
     console.log(spaces + star);
   }
 }
-// printInvertedPyramid(8);
+printInvertedPyramid(5);
+```
 
-// 7. Print Hollow Pyramid Pattern
+---
+
+## 7. Print a pyramid with only boundary stars.
+
+### Example (Input: 5)
+
+### Output:
+
+        *
+       * *
+      *   *
+     *     *
+    *********
+
+```js
 function printHollowPyramidPattern(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -114,9 +217,24 @@ function printHollowPyramidPattern(row) {
     console.log(star);
   }
 }
-// printHollowPyramidPattern(5);
+printHollowPyramidPattern(5);
+```
 
-// 8. Print Hollow Square Pattern
+---
+
+## 8. Print a hollow square using stars.
+
+### Example (Input: 5)
+
+### Output:
+
+    *****
+    *   *
+    *   *
+    *   *
+    *****
+
+```js
 function printHollowSquarePattern(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -130,9 +248,24 @@ function printHollowSquarePattern(row) {
     console.log(star);
   }
 }
-// printHollowSquarePattern(7);
+printHollowSquarePattern(5);
+```
 
-// 9. Print Alternative Binary Triangle
+---
+
+## 9. Print a binary pattern triangle with alternating values.
+
+### Example (Input: 5)
+
+### Output:
+
+    1
+    01
+    101
+    0101
+    10101
+
+```js
 function printAlternativeBinaryTriangle(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -142,9 +275,24 @@ function printAlternativeBinaryTriangle(row) {
     console.log(star);
   }
 }
-// printAlternativeBinaryTriangle(5)
+printAlternativeBinaryTriangle(5);
+```
 
-// 10. Print Hollow Inverted Pyramid
+---
+
+## 10. Print an inverted hollow pyramid.
+
+### Example (Input: 5)
+
+### Output:
+
+    *********
+     *     *
+      *   *
+       * *
+        *
+
+```js
 function printHollowInvertedPyramidPattern(row) {
   for (let i = row; i >= 1; i--) {
     let star = "";
@@ -167,8 +315,29 @@ function printHollowInvertedPyramidPattern(row) {
     console.log(star);
   }
 }
-// printHollowInvertedPyramidPattern(8);
-// 11. Print Butterfly Pattern
+printHollowInvertedPyramidPattern(5);
+```
+
+---
+
+## 11. Print a butterfly star pattern.
+
+### Example (Input: 5)
+
+### Output:
+
+    *        *
+    **      **
+    ***    ***
+    ****  ****
+    **********
+    **********
+    ****  ****
+    ***    ***
+    **      **
+    *        *
+
+```js
 function printButerflyPattern(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -197,9 +366,28 @@ function printButerflyPattern(row) {
     console.log(star);
   }
 }
-// printButerflyPattern(10);
+printButerflyPattern(10);
+```
 
-// 12. Print Dimond Pattern
+---
+
+## 12. Print a symmetric diamond star pattern.
+
+### Example (Input: 5)
+
+### Output:
+
+        *
+       ***
+      *****
+     *******
+    *********
+     *******
+      *****
+       ***
+        *
+
+```js
 function printDimondPattern(row) {
   for (let i = 1; i <= row; i++) {
     let star = "";
@@ -222,21 +410,66 @@ function printDimondPattern(row) {
     console.log(star);
   }
 }
-// printDimondPattern(5);
+printDimondPattern(5);
+```
 
-// 13. Print Hourglass Pattern
-// 14. Print Hollow Dimond Pattern
-// 15. Print Rhombus Pattern
+---
 
-// 16. Print Multiplication table
+## 13. Print an hourglass-shaped star pattern.
+
+---
+
+## 14. Print a diamond with hollow space inside.
+
+---
+
+## 15. Print a slanted parallelogram using stars.
+
+---
+
+## 16. Print the multiplication table of a given number.
+
+### Example (Input: 5)
+
+### Output:
+
+    5 x 1 = 5
+    5 x 2 = 10
+    5 x 3 = 15
+    ...
+    5 x 10 = 50
+
+```js
 function printMultiplicationTable(num) {
   console.log(`Ther multiplication table of ${num}`);
   for (i = 1; i <= 10; i++) {
     console.log(`${num} x ${i} = ${num * i}`);
   }
 }
-// printMultiplicationTable(5)
-// 17. Print Multiplication table up to N
+printMultiplicationTable(5);
+```
+
+---
+
+## 17. Print multiplication tables from **1 to N**.
+
+### Example (Input: 3)
+
+### Output:
+
+    1 x 1 = 1
+    ...
+    1 x 10 = 10
+    ----------
+    2 x 1 = 2
+    ...
+    2 x 10 = 20
+    ----------
+    3 x 1 = 3
+    ...
+    3 x 10 = 30
+
+```js
 function printMultiplicationTableUptoN(num) {
   console.log("The multiplication table upto", num);
   for (let i = 1; i <= num; i++) {
@@ -246,4 +479,12 @@ function printMultiplicationTableUptoN(num) {
     console.log("----------");
   }
 }
-printMultiplicationTableUptoN(10);
+printMultiplicationTableUptoN(3);
+```
+
+---
+
+**Tip:** Practice each pattern using nested loops and understand how
+**spaces and stars** are controlled in each case.
+
+🔥 Happy Coding!
