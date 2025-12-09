@@ -520,4 +520,441 @@ function checkCharacterTypeAlt(char) {
       },
     ],
   },
+  {
+    id: "day-03",
+    title: "Day 03 - Pattern Programs",
+    description: "Master pattern printing with nested loops",
+    markdown: `# Day 03 - Pattern Programs
+
+## Topics Covered
+- Nested loops
+- Pattern recognition
+- String manipulation
+- Spacing and formatting
+
+## Problems
+These problems strengthen your understanding of loops and pattern generation.`,
+    problems: [
+      {
+        id: "left-aligned-increasing-triangle",
+        name: "Left Aligned Increasing Triangle",
+        description: "Print a left-aligned triangle with increasing stars",
+        difficulty: "Easy",
+        category: "Patterns",
+        solution: `function leftAlignedIncreasingTriangle(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 5:
+// *
+// **
+// ***
+// ****
+// *****`,
+      },
+      {
+        id: "left-aligned-decreasing-triangle",
+        name: "Left Aligned Decreasing Triangle",
+        description: "Print a left-aligned triangle with decreasing stars",
+        difficulty: "Easy",
+        category: "Patterns",
+        solution: `function leftAlignedDecreasingTriangle(row) {
+  for (let i = row; i >= 1; i--) {
+    let star = "";
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 5:
+// *****
+// ****
+// ***
+// **
+// *`,
+      },
+      {
+        id: "right-aligned-increasing-triangle",
+        name: "Right Aligned Increasing Triangle",
+        description: "Print a right-aligned triangle with increasing stars",
+        difficulty: "Easy",
+        category: "Patterns",
+        solution: `function rigtAlignedIncreasingTriangle(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    let space = "";
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    for (let s = 1; s <= row - i; s++) {
+      space += " ";
+    }
+    console.log(space + star);
+  }
+}
+
+// Output for row = 5:
+//     *
+//    **
+//   ***
+//  ****
+// *****`,
+      },
+      {
+        id: "right-aligned-decreasing-triangle",
+        name: "Right Aligned Decreasing Triangle",
+        description: "Print a right-aligned triangle with decreasing stars",
+        difficulty: "Easy",
+        category: "Patterns",
+        solution: `function rightAlignedDecreasingTriangle(row) {
+  for (let i = row; i >= 1; i--) {
+    let star = "";
+    let space = "";
+
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+
+    for (let s = 1; s <= row - i; s++) {
+      space += " ";
+    }
+
+    console.log(space + star);
+  }
+}
+
+// Output for row = 5:
+// *****
+//  ****
+//   ***
+//    **
+//     *`,
+      },
+      {
+        id: "centered-pyramid",
+        name: "Centered Pyramid",
+        description: "Print a centered pyramid with stars",
+        difficulty: "Medium",
+        category: "Patterns",
+        solution: `function printCenteredPyramid(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    let spaces = "";
+    for (let s = 1; s <= row - i; s++) {
+      spaces += " ";
+    }
+    for (let j = 1; j <= 2 * i - 1; j++) {
+      star += "*";
+    }
+    console.log(spaces + star);
+  }
+}
+
+// Output for row = 5:
+//     *
+//    ***
+//   *****
+//  *******
+// *********`,
+      },
+      {
+        id: "inverted-pyramid",
+        name: "Inverted Pyramid",
+        description: "Print an inverted pyramid with stars",
+        difficulty: "Medium",
+        category: "Patterns",
+        solution: `function printInvertedPyramid(row) {
+  for (let i = row; i >= 1; i--) {
+    let star = "";
+    let spaces = "";
+    for (let s = 1; s <= row - i; s++) {
+      spaces += " ";
+    }
+    for (let j = 1; j <= 2 * i - 1; j++) {
+      star += "*";
+    }
+    console.log(spaces + star);
+  }
+}
+
+// Output for row = 5:
+// *********
+//  *******
+//   *****
+//    ***
+//     *`,
+      },
+      {
+        id: "hollow-pyramid",
+        name: "Hollow Pyramid",
+        description: "Print a hollow pyramid pattern",
+        difficulty: "Hard",
+        category: "Patterns",
+        solution: `function printHollowPyramidPattern(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let s = 1; s <= row - i; s++) {
+      star += " ";
+    }
+    if (i === 1) {
+      star += "*";
+    } else if (i === row) {
+      for (let j = 1; j <= 2 * i - 1; j++) {
+        star += "*";
+      }
+    } else {
+      star += "*";
+      for (let space = 1; space <= 2 * i - 3; space++) {
+        star += " ";
+      }
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row= 5:
+//     *
+//    * *
+//   *   *
+//  *     *
+// *********`,
+      },
+      {
+        id: "hollow-square",
+        name: "Hollow Square Pattern",
+        description: "Print a hollow square with stars",
+        difficulty: "Medium",
+        category: "Patterns",
+        solution: `function printHollowSquarePattern(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let j = 1; j <= row; j++) {
+      if (i === 1 || i === row || j === 1 || j === row) {
+        star += "*";
+      } else {
+        star += " ";
+      }
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 7:
+// *******
+// *     *
+// *     *
+// *     *
+// *     *
+// *     *
+// *******`,
+      },
+      {
+        id: "binary-triangle",
+        name: "Binary Triangle Pattern",
+        description: "Print a triangle with alternating 0s and 1s",
+        difficulty: "Hard",
+        category: "Patterns",
+        solution: `function printAlternativeBinaryTriangle(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let j = 1; j <= i; j++) {
+      star = star + (i % 2 === 1 ? j % 2 : (j + 1) % 2);
+    }
+    console.log(star);
+  }
+}
+// Output for row = 5:
+// 1
+// 01
+// 101
+// 0101
+// 10101`,
+      },
+      {
+        id: "hollow-inverted-pyramid",
+        name: "Hollow Inverted Pyramid",
+        description: "Print a hollow inverted pyramid pattern",
+        difficulty: "Hard",
+        category: "Patterns",
+        solution: `function printHollowInvertedPyramidPattern(row) {
+  for (let i = row; i >= 1; i--) {
+    let star = "";
+    for (let s = 1; s <= row - i; s++) {
+      star += " ";
+    }
+    if (i === 1) {
+      star += "*";
+    } else if (i === row) {
+      for (let j = 1; j <= 2 * i - 1; j++) {
+        star += "*";
+      }
+    } else {
+      star += "*";
+      for (let space = 1; space <= 2 * i - 3; space++) {
+        star += " ";
+      }
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 5:
+// *********
+//  *     *
+//   *   *
+//    * *
+//     *`,
+      },
+      {
+        id: "butterfly-pattern",
+        name: "Butterfly Pattern",
+        description: "Print a butterfly pattern with stars",
+        difficulty: "Hard",
+        category: "Patterns",
+        solution: `function printButerflyPattern(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    for (let s = 1; s <= 2 * (row - i); s++) {
+      star += " ";
+    }
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+  for (let i = row; i >= 1; i--) {
+    let star = "";
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    for (let s = 1; s <= 2 * (row - i); s++) {
+      star += " ";
+    }
+    for (let j = 1; j <= i; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 5:
+// *        *
+// **      **
+// ***    ***
+// ****  ****
+// **********
+// ****  ****
+// ***    ***
+// **      **
+// *        *`,
+      },
+      {
+        id: "diamond-pattern",
+        name: "Diamond Pattern",
+        description: "Print a diamond shape with stars",
+        difficulty: "Hard",
+        category: "Patterns",
+        solution: `function printDimondPattern(row) {
+  for (let i = 1; i <= row; i++) {
+    let star = "";
+    for (let s = 1; s <= row - i; s++) {
+      star += " ";
+    }
+    for (let j = 1; j <= 2 * i - 1; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+  for (let i = row - 1; i >= 1; i--) {
+    let star = "";
+    for (let s = 1; s <= row - i; s++) {
+      star += " ";
+    }
+    for (let j = 1; j <= 2 * i - 1; j++) {
+      star += "*";
+    }
+    console.log(star);
+  }
+}
+
+// Output for row = 5:
+//     *
+//    ***
+//   *****
+//  *******
+// *********
+//  *******
+//   *****
+//    ***
+//     *`,
+      },
+      {
+        id: "multiplication-table",
+        name: "Multiplication Table",
+        description: "Print multiplication table for a given number",
+        difficulty: "Easy",
+        category: "Patterns",
+        solution: `function multiplicationTable(num) {
+  let result = \`Multiplication table of \${num}\\n\`;
+  for (let i = 1; i <= 10; i++) {
+    result += \`\${num} x \${i} = \${num * i}\\n\`;
+  }
+  return result;
+}
+
+// Output for num = 5:
+// Multiplication table of 5
+// 5 x 1 = 5
+// 5 x 2 = 10
+// 5 x 3 = 15
+// 5 x 4 = 20
+// 5 x 5 = 25
+// 5 x 6 = 30
+// 5 x 7 = 35
+// 5 x 8 = 40
+// 5 x 9 = 45
+// 5 x 10 = 50`,
+      },
+      {
+        id: "multiplication-table-up-to-n",
+        name: "Multiplication Tables Up to N",
+        description: "Print multiplication tables from 1 to N",
+        difficulty: "Medium",
+        category: "Patterns",
+        solution: `function multiplicationTablesUptoN(num) {
+  let result = "";
+  for (let i = 1; i <= num; i++) {
+    result += \`\\nMultiplication table of \${i}:\\n\`;
+    for (let j = 1; j <= 10; j++) {
+      result += \`\${i} x \${j} = \${i * j}\\n\`;
+    }
+  }
+  return result;
+}
+
+// Output for num = 3:
+// Multiplication table of 1:
+// 1 x 1 = 1
+// 1 x 2 = 2
+// ...
+// Multiplication table of 2:
+// 2 x 1 = 2
+// 2 x 2 = 4
+// ...`,
+      },
+    ],
+  },
 ];
