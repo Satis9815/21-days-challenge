@@ -8,57 +8,22 @@ import DayAddFormModal from "./DayAddFormModal/DayAddFormModal";
 import DayInfoCard from "./DayInfoCard/DayInfoCard";
 import { DeleteModal } from "@/components/shared/common/Modal/DeleteModal/DeleteModal";
 
-const dummyDaysData = [
-  {
-    id: 1,
-    title: "Day 01 - Basic Loops & Number Patterns",
-    description: "Master the fundamentals of loops and number operations",
-    markdown: `# Day 01 - Basic Loops & Number Patterns
-        ## Topics Covered
-        - For loops and iterations
-        - Number sequences
-        - Basic arithmetic operations
-        ## Problems
-        These problems focus on fundamental loop structures and number handling.`,
-    problems: [],
-  },
-  {
-    id: 2,
-    title: "Day 02 - Conditional Logic & Classification",
-    description: "Master conditional statements and decision-making logic",
-    markdown: `# Day 02 - Conditional Logic & Classification
-        ## Topics Covered
-        - If-else statements
-        - Comparison operators
-        - Classification logic
-        ## Problems
-        These problems focus on conditional logic and number/character classification.`,
-    problems: [],
-  },
-  {
-    id: 3,
-    title: "Day 03 - Pattern Programs",
-    description: "Master pattern printing with nested loops",
-    markdown: `# Day 03 - Pattern Programs
-            ## Topics Covered
-            - Nested loops
-            - Pattern recognition
-            - String manipulation
-            - Spacing and formatting
+interface Day {
+  _id: string;
+  title: string;
+  description: string;
+  markdown: string;
+  problems: unknown[];
+}
 
-            ## Problems
-            These problems strengthen your understanding of loops and pattern generation.`,
-    problems: [],
-  },
-];
-
-export function DaysManager() {
+export function DaysManager({ days }: { days: Day[] }) {
   const [openDayAddForm, setOpenDayAddForm] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(true);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const handleDelete = () => {
     console.log("Deleting...");
   };
+
   return (
     <>
       <div className="space-y-6">
@@ -71,12 +36,12 @@ export function DaysManager() {
         </div>
 
         <div className="grid gap-4">
-          {dummyDaysData.map((day) => (
+          {days.map((day) => (
             <DayInfoCard
-              key={day.id}
+              key={day._id}
               title={day.title}
               description={day.description}
-              problemsCount={11}
+              problemsCount={day.problems.length}
             />
           ))}
         </div>
