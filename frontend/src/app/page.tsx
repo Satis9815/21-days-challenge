@@ -11,6 +11,7 @@ import { MarkdownPreviewer } from "@/components/markdown-previewer"
 import { AssignmentsSection } from "@/components/assignments-section"
 import { BookOpen, Code2, Loader2 } from "lucide-react"
 import { getAllDays } from "../../actions/day-actions"
+import Link from "next/link"
 
 export default function Home() {
   const [problemsData, setProblemsData] = useState<any[]>([])
@@ -71,7 +72,7 @@ export default function Home() {
             Please seed the database with initial data from the admin panel.
           </p>
           <Button asChild>
-            <a href="/admin">Go to Admin Panel</a>
+           <Link href={"/admin/dashboard"}>Go to Admin Panel</Link>
           </Button>
         </div>
       </div>
