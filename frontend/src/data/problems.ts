@@ -957,4 +957,264 @@ These problems strengthen your understanding of loops and pattern generation.`,
       },
     ],
   },
+  {
+  id: "day-04",
+  title: "Day 04 - Digit Manipulation",
+  description: "Operations on digits without using string methods",
+  markdown: `# Day 04 - Digit Manipulation
+
+## Topics Covered
+- Digit extraction
+- Mathematical transformations
+- Number reversals and checks`,
+  problems: [
+    {
+      id: "split-number-into-digits",
+      name: "Split Number into Digits",
+      description: "Split a number into individual digits without using strings",
+      difficulty: "Easy",
+      category: "Digits",
+      solution: `function splitNumerIntoDigit(num) {
+  if (num === 0) return [0];
+  let digits = [];
+  let temp = Math.abs(num);
+  while (temp > 0) {
+    digits.push(temp % 10);
+    temp = Math.floor(temp / 10);
+  }
+  return digits.reverse();
+}`
+    },
+    {
+      id: "reverse-number",
+      name: "Reverse a Number",
+      description: "Reverse digits of a number mathematically",
+      difficulty: "Easy",
+      category: "Digits",
+      solution: `function reverseNumber(num) {
+  let rev = 0;
+  while (num > 0) {
+    rev = rev * 10 + (num % 10);
+    num = Math.floor(num / 10);
+  }
+  return rev;
+}`
+    },
+    {
+      id: "remove-decimals",
+      name: "Remove Decimal Part",
+      description: "Remove decimals without using strings",
+      difficulty: "Easy",
+      category: "Digits",
+      solution: `function removeDecimals(num) {
+  while (!Number.isInteger(num)) num *= 10;
+  return num;
+}`
+    },
+    {
+      id: "palindrome-number",
+      name: "Palindrome Number Check",
+      description: "Check whether a number is palindrome",
+      difficulty: "Medium",
+      category: "Digits",
+      solution: `function isPalindrome(num) {
+  let original = num, rev = 0;
+  while (num > 0) {
+    rev = rev * 10 + (num % 10);
+    num = Math.floor(num / 10);
+  }
+  return rev === original;
+}`
+    },
+    {
+      id: "armstrong-number",
+      name: "Armstrong Number",
+      description: "Check if a number is Armstrong",
+      difficulty: "Medium",
+      category: "Digits",
+      solution: `function isArmstrongNumber(num) {
+  let temp = num;
+  let digits = [];
+  while (temp > 0) {
+    digits.push(temp % 10);
+    temp = Math.floor(temp / 10);
+  }
+  let sum = 0;
+  for (let d of digits) sum += d ** digits.length;
+  return sum === num;
+}`
+    }
+  ]
+},
+{
+  id: "day-05",
+  title: "Day 05 - Factors & Divisors",
+  description: "Working with factors, HCF, LCM and properties",
+  markdown: `# Day 05 - Factors & Divisors`,
+  problems: [
+    {
+      id: "get-all-factors",
+      name: "Get All Factors",
+      description: "Return all factors of a number",
+      difficulty: "Easy",
+      category: "Factors",
+      solution: `function getAllFactors(num) {
+  let factors = [];
+  for (let i = 1; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) {
+      factors.push(i);
+      if (i !== num / i) factors.push(num / i);
+    }
+  }
+  return factors.sort((a,b)=>a-b);
+}`
+    },
+    {
+      id: "hcf",
+      name: "HCF / GCD",
+      description: "Find highest common factor",
+      difficulty: "Easy",
+      category: "Math",
+      solution: `function HCF(a,b){
+  while(b!==0){
+    [a,b]=[b,a%b];
+  }
+  return a;
+}`
+    },
+    {
+      id: "lcm",
+      name: "LCM",
+      description: "Find least common multiple",
+      difficulty: "Easy",
+      category: "Math",
+      solution: `function findLCM(a,b){
+  return (a*b)/HCF(a,b);
+}`
+    },
+    {
+      id: "perfect-number",
+      name: "Perfect Number",
+      description: "Check if a number is perfect",
+      difficulty: "Medium",
+      category: "Math",
+      solution: `function isPerfectNumber(n){
+  let sum = 1;
+  for(let i=2;i*i<=n;i++){
+    if(n%i===0){
+      sum+=i;
+      if(i!==n/i) sum+=n/i;
+    }
+  }
+  return sum===n;
+}`
+    }
+  ]
+},
+{
+  id: "day-06",
+  title: "Day 06 - Prime & Fibonacci",
+  description: "Prime numbers and Fibonacci series",
+  markdown: `# Day 06 - Prime & Fibonacci`,
+  problems: [
+    {
+      id: "is-prime",
+      name: "Prime Number Check",
+      description: "Check if number is prime",
+      difficulty: "Easy",
+      category: "Prime",
+      solution: `function isPrimeNumber(n){
+  if(n<=1) return false;
+  for(let i=2;i*i<=n;i++) if(n%i===0) return false;
+  return true;
+}`
+    },
+    {
+      id: "fibonacci-series",
+      name: "Fibonacci Series",
+      description: "Generate Fibonacci sequence",
+      difficulty: "Easy",
+      category: "Series",
+      solution: `function fibonacciSeries(n){
+  let a=0,b=1,res=[];
+  for(let i=0;i<n;i++){
+    res.push(a);
+    [a,b]=[b,a+b];
+  }
+  return res;
+}`
+    },
+    {
+      id: "prime-fibonacci",
+      name: "Prime Fibonacci Numbers",
+      description: "Print first N prime Fibonacci numbers",
+      difficulty: "Hard",
+      category: "Series",
+      solution: `function printFirstNPrimeFibonacciNumbers(n){
+  let a=0,b=1,count=0,res=[];
+  while(count<n){
+    let fib=a+b;
+    a=b; b=fib;
+    if(isPrimeNumber(fib)){
+      res.push(fib);
+      count++;
+    }
+  }
+  return res;
+}`
+    }
+  ]
+},
+{
+  id: "day-07",
+  title: "Day 07 - Prime Factorization & Special Numbers",
+  description: "Prime factorization and special number classifications",
+  markdown: `# Day 07 - Prime Factorization & Special Numbers`,
+  problems: [
+    {
+      id: "prime-factorization",
+      name: "Prime Factorization",
+      description: "Return prime factorization as array",
+      difficulty: "Medium",
+      category: "Prime Factors",
+      solution: `function getPrimeFactorization(num){
+  let res=[];
+  while(num%2===0){res.push(2);num/=2;}
+  for(let i=3;i*i<=num;i+=2){
+    while(num%i===0){res.push(i);num/=i;}
+  }
+  if(num>2) res.push(num);
+  return res;
+}`
+    },
+    {
+      id: "powerful-number",
+      name: "Powerful Number",
+      description: "Check if all prime factors have exponent ≥ 2",
+      difficulty: "Hard",
+      category: "Prime Factors",
+      solution: `function isPowerfulNumber(num){
+  let pf={};
+  for(let f of getPrimeFactorization(num)){
+    pf[f]=(pf[f]||0)+1;
+  }
+  return Math.min(...Object.values(pf))>=2;
+}`
+    },
+    {
+      id: "smith-number",
+      name: "Smith Number",
+      description: "Check if number is Smith",
+      difficulty: "Hard",
+      category: "Special Numbers",
+      solution: `function isSmithNumber(num){
+  let sum=n=>String(n).split('').reduce((a,b)=>a+ +b,0);
+  let pf=getPrimeFactorization(num);
+  if(pf.length===1) return false;
+  return sum(num)===pf.reduce((a,b)=>a+sum(b),0);
+}`
+    }
+  ]
+}
+
 ];

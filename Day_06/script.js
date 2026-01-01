@@ -36,7 +36,7 @@ function isCoPrime(num1, num2) {
 
 // 3.Print Fibonacci Series up to N Terms
 // Input: N = 10
-// Output: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+// Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 function fibonacciSeries(num) {
   let x = 0;

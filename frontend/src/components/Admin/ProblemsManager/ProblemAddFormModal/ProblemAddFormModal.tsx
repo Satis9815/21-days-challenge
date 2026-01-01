@@ -20,6 +20,7 @@ import {
   addProblem,
   updateProblem,
 } from "../../../../../actions/problem-actions";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Mode = "add" | "edit" | "view";
 
@@ -85,7 +86,7 @@ const ProblemFormModal = ({
         await updateProblem(problem._id, data);
       }
       onClose();
-      reset()
+      reset();
     } catch (err) {
       console.error("Submit error:", err);
     }
@@ -104,86 +105,88 @@ const ProblemFormModal = ({
       }
       description="Problem details"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
-        <InputField
-          type="text"
-          placeholder="Enter problem"
-          label="Problem Name"
-          register={register}
-          name="name"
-          disabled={isView}
-          error={errors.name?.message}
-        />
-
-        <TextareaField
-          placeholder="Enter problem description"
-          label="Description"
-          register={register}
-          name="description"
-          disabled={isView}
-          error={errors.description?.message}
-        />
-
-        <InputField
-          type="text"
-          label="Category"
-          placeholder="Enter category"
-          register={register}
-          name="category"
-          disabled={isView}
-          error={errors.category?.message}
-        />
-
-        <div className="space-y-1">
-          <label className="text-sm font-medium">Difficulty</label>
-          <Controller
-            name="difficulty"
-            control={control}
-            render={({ field }) => (
-              <Select
-                disabled={isView}
-                onValueChange={field.onChange}
-                value={field.value}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select difficulty" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Easy">Easy</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="Hard">Hard</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
+      <ScrollArea className="max-h-[80vh]">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
+          <InputField
+            type="text"
+            placeholder="Enter problem"
+            label="Problem Name"
+            register={register}
+            name="name"
+            disabled={isView}
+            error={errors.name?.message}
           />
-          {errors.difficulty && (
-            <p className="text-sm text-destructive">
-              {errors.difficulty.message}
-            </p>
-          )}
-        </div>
 
-        <TextareaField
-          label="Solution Code"
-          rows={8}
-          placeholder="Enter solution"
-          register={register}
-          name="solution"
-          disabled={isView}
-          error={errors.solution?.message}
-        />
+          <TextareaField
+            placeholder="Enter problem description"
+            label="Description"
+            register={register}
+            name="description"
+            disabled={isView}
+            error={errors.description?.message}
+          />
 
-        {mode !== "view" && (
-          <div className="flex gap-2 justify-end">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save"}
-            </Button>
+          <InputField
+            type="text"
+            label="Category"
+            placeholder="Enter category"
+            register={register}
+            name="category"
+            disabled={isView}
+            error={errors.category?.message}
+          />
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Difficulty</label>
+            <Controller
+              name="difficulty"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  disabled={isView}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select difficulty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Easy">Easy</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Hard">Hard</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.difficulty && (
+              <p className="text-sm text-destructive">
+                {errors.difficulty.message}
+              </p>
+            )}
           </div>
-        )}
-      </form>
+
+          <TextareaField
+            label="Solution Code"
+            rows={8}
+            placeholder="Enter solution"
+            register={register}
+            name="solution"
+            disabled={isView}
+            error={errors.solution?.message}
+          />
+
+          {mode !== "view" && (
+            <div className="flex gap-2 justify-end">
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          )}
+        </form>
+      </ScrollArea>
     </Modal>
   );
 };
