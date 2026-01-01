@@ -1,89 +1,116 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import Modal from "@/components/shared/common/Modal/Modal";
 import { InputField } from "@/components/shared/common/InputField/InputField";
 import { TextareaField } from "@/components/shared/common/TextareaField/TextareaField";
 import { Button } from "@/components/ui/button";
-import { DayFormData, daySchema } from "./day.schema";
-import { createDay } from "../../../../../actions/day-actions";
+import { Day } from "../DaysManager";
+import { createDay, updateDay } from "../../../../../actions/day-actions";
 
-interface DayAddFormModalProps {
-  openDayAddForm: boolean;
-  setOpenDayAddForm: (value: boolean) => void;
+type Mode = "add" | "edit" | "view";
+
+interface DayFormModalProps {
+  open: boolean;
+  onClose: () => void;
+  mode: Mode;
+  day?: Day | null;
 }
 
-const DayAddFormModal = ({
-  openDayAddForm,
-  setOpenDayAddForm,
-}: DayAddFormModalProps) => {
+interface DayFormData {
+  title: string;
+  description: string;
+  markdown: string;
+}
+
+const DayFormModal = ({ open, onClose, mode, day }: DayFormModalProps) => {
+  const isView = mode === "view";
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
     reset,
-  } = useForm<DayFormData>({
-    resolver: zodResolver(daySchema),
-  });
+    formState: { isSubmitting },
+  } = useForm<DayFormData>();
+
+  useEffect(() => {
+    if (day) {
+      reset({
+        title: day.title,
+        description: day.description,
+        markdown: day.markdown,
+      });
+    } else {
+      reset({ title: "", description: "", markdown: "" });
+    }
+  }, [day, reset]);
 
   const onSubmit = async (data: DayFormData) => {
-    await createDay(data);
-    reset();
-    setOpenDayAddForm(false);
+    if (mode === "add") {
+      await createDay(data);
+    }
+
+    if (mode === "edit" && day) {
+      await updateDay(day._id, data);
+    }
+
+    onClose();
   };
 
   return (
     <Modal
-      isOpen={openDayAddForm}
-      onClose={() => setOpenDayAddForm(false)}
-      title="Add a New Day"
-      description="Fill all the fields to add a new day"
+      isOpen={open}
+      onClose={onClose}
+      title={
+        mode === "add"
+          ? "Add Day"
+          : mode === "edit"
+          ? "Edit Day"
+          : "View Day"
+      }
+      description="Day details"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
         <InputField
           label="Title"
           type="text"
-          placeholder="Day Title"
-          name="title"
+          placeholder="Day title"
           register={register}
-          error={errors.title?.message}
+          name="title"
+          disabled={isView}
         />
 
         <TextareaField
           label="Description"
-          placeholder="Day Description"
-          name="description"
+          placeholder="Short description"
           register={register}
-          error={errors.description?.message}
+          name="description"
+          disabled={isView}
         />
 
         <TextareaField
-          label="Markdown"
-          placeholder="Markdown Content"
-          rows={6}
-          name="markdown"
+          label="Markdown Content"
+          placeholder="Markdown content"
+          rows={8}
           register={register}
-          error={errors.markdown?.message}
+          name="markdown"
+          disabled={isView}
         />
 
-        <div className="flex gap-2">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save"}
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setOpenDayAddForm(false)}
-          >
-            Cancel
-          </Button>
-        </div>
+        {mode !== "view" && (
+          <div className="flex gap-2">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save"}
+            </Button>
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+          </div>
+        )}
       </form>
     </Modal>
   );
 };
 
-export default DayAddFormModal;
+export default DayFormModal;

@@ -2,6 +2,7 @@
 
 import { connectDatabase } from "@/db/db";
 import Day from "@/db/models/Day";
+import Problem from "@/db/models/Problem";
 import { revalidatePath } from "next/cache";
 
 // Get all days with populated problems
@@ -74,9 +75,22 @@ export async function updateDay(id: string, data: Partial<{ title?: string; desc
 export async function deleteDay(id: string) {
   try {
     connectDatabase();
+
+    const day = await Day.findById(id);
+
+    if (!day) {
+      throw new Error("Day not found");
+    }
+
+    if (day.problems.length > 0) {
+      await Problem.deleteMany({ _id: { $in: day.problems } });
+    }
+
     await Day.findByIdAndDelete(id);
+
     revalidatePath("/");
     revalidatePath("/admin/problems-manager");
+
     return { success: true };
   } catch (error) {
     console.error("Error deleting day:", error);

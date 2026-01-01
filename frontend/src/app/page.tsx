@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,27 +9,77 @@ import { Badge } from "@/components/ui/badge"
 import { ProblemVisualizer } from "@/components/problem-visualizer"
 import { MarkdownPreviewer } from "@/components/markdown-previewer"
 import { AssignmentsSection } from "@/components/assignments-section"
-import { BookOpen, Code2 } from "lucide-react"
-import { problemsData } from "@/data/problems"
+import { BookOpen, Code2, Loader2 } from "lucide-react"
+import { getAllDays } from "../../actions/day-actions"
 
 export default function Home() {
-  const [selectedDay, setSelectedDay] = useState("day-01")
-  const [selectedProblem, setSelectedProblem] = useState("max-of-three")
+  const [problemsData, setProblemsData] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedDay, setSelectedDay] = useState("")
+  const [selectedProblem, setSelectedProblem] = useState("")
   const [activeTab, setActiveTab] = useState<"problems" | "assignments">("problems")
 
-  const currentDay = problemsData.find((d) => d.id === selectedDay)
-  const currentProblem = currentDay?.problems.find((p) => p.id === selectedProblem)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const data = await getAllDays()
+        setProblemsData(data)
+        if (data.length > 0) {
+          setSelectedDay(data[0]._id)
+          if (data[0].problems && data[0].problems.length > 0) {
+            setSelectedProblem(data[0].problems[0]._id)
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching problems data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const currentDay = problemsData.find((d) => d._id === selectedDay)
+  const currentProblem = currentDay?.problems?.find((p: any) => p._id === selectedProblem)
 
   const handleDaySelect = (dayId: string) => {
     setSelectedDay(dayId)
-    const day = problemsData.find((d) => d.id === dayId)
-    if (day && day.problems.length > 0) {
-      setSelectedProblem(day.problems[0].id)
+    const day = problemsData.find((d) => d._id === dayId)
+    if (day && day.problems && day.problems.length > 0) {
+      setSelectedProblem(day.problems[0]._id)
     }
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading problems...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (problemsData.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-2">No Problems Found</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Please seed the database with initial data from the admin panel.
+          </p>
+          <Button asChild>
+            <a href="/admin">Go to Admin Panel</a>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-background to-muted">
+    <div className="min-h-screen  from-background to-muted">
       <div className="sticky top-0 z-50 bg-white dark:bg-slate-950 border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-full mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -43,7 +94,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-full mx-auto px-6 py-6">
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "problems" | "assignments")} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid  grid-cols-2 mb-6 w-full">
             <TabsTrigger value="problems">Solve Problems</TabsTrigger>
             {/* <TabsTrigger value="assignments">Assignments</TabsTrigger> */}
           </TabsList>
@@ -59,9 +110,9 @@ export default function Home() {
                   <div className="space-y-2">
                     {problemsData.map((day) => (
                       <Button
-                        key={day.id}
-                        variant={selectedDay === day.id ? "default" : "outline"}
-                        onClick={() => handleDaySelect(day.id)}
+                        key={day._id}
+                        variant={selectedDay === day._id ? "default" : "outline"}
+                        onClick={() => handleDaySelect(day._id)}
                         className="w-full justify-start text-left h-auto py-2"
                         size="sm"
                       >
@@ -82,11 +133,11 @@ export default function Home() {
                     <p className="text-sm text-muted-foreground mb-4">{currentDay.description}</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {currentDay.problems.map((problem) => (
+                      {currentDay.problems?.map((problem: any) => (
                         <Button
-                          key={problem.id}
-                          variant={selectedProblem === problem.id ? "default" : "outline"}
-                          onClick={() => setSelectedProblem(problem.id)}
+                          key={problem._id}
+                          variant={selectedProblem === problem._id ? "default" : "outline"}
+                          onClick={() => setSelectedProblem(problem._id)}
                           className="justify-between h-auto py-3 px-3"
                         >
                           <div className="text-left flex-1">
@@ -97,13 +148,13 @@ export default function Home() {
                             variant="secondary"
                             className={`ml-2 ${
                               problem.difficulty === "Easy"
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                                 : problem.difficulty === "Medium"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
+                                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                  : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                             }`}
                           >
-                            {problem.difficulty[0]}
+                            {problem.difficulty[0].toUpperCase()}
                           </Badge>
                         </Button>
                       ))}
@@ -113,10 +164,11 @@ export default function Home() {
 
                 <div className="space-y-4">
                   {currentDay && <MarkdownPreviewer content={currentDay.markdown || ""} title={currentDay.title} />}
+
                   {currentProblem && (
                     <Card className="p-6 border-2 border-purple-200 dark:border-purple-900">
                       <ProblemVisualizer
-                        problemId={currentProblem.id}
+                        problemId={currentProblem._id}
                         problemName={currentProblem.name}
                         difficulty={currentProblem.difficulty}
                         solution={currentProblem.solution}

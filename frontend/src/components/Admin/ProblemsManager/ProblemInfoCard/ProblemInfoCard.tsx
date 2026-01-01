@@ -2,51 +2,39 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Edit2, Eye, Trash2 } from "lucide-react";
+import { Problem } from "../ProblemsManager";
 
 interface ProblemInfoCardProps {
-  name: string;
-  description: string;
-  category: string;
-  difficulty: "Easy" | "Medium" | "hard";
+  problem: Problem;
+  onEdit: (p: Problem) => void;
+  onView: (p: Problem) => void;
+  onDelete: (p: Problem) => void;
 }
 
-const ProblemInfoCard = ({
-  name,
-  description,
-  category,
-  difficulty,
-}: ProblemInfoCardProps) => {
+const ProblemInfoCard = ({ problem, onEdit, onView, onDelete }: ProblemInfoCardProps) => {
   return (
     <Card className="p-4">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <h3 className="font-semibold">{name}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
+      <div className="flex justify-between">
+        <div>
+          <h3 className="font-semibold">{problem.name}</h3>
+          <p className="text-sm text-muted-foreground">
+            {problem.description}
+          </p>
+
           <div className="mt-2 flex gap-2">
-            <Badge>{category}</Badge>
-            <Badge
-              variant="secondary"
-              className={`${
-                difficulty === "Easy"
-                  ? "bg-green-100 text-green-800"
-                  : difficulty === "Medium"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-red-100 text-red-800"
-              }`}
-            >
-              {" "}
-              {difficulty}
-            </Badge>
+            <Badge>{problem.category}</Badge>
+            <Badge variant="secondary">{problem.difficulty}</Badge>
           </div>
         </div>
+
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+          <Button size="sm" variant="outline" onClick={() => onEdit(problem)}>
             <Edit2 className="w-4 h-4" />
           </Button>
-          <Button variant="secondary" size="sm">
+          <Button size="sm" variant="secondary" onClick={() => onView(problem)}>
             <Eye className="w-4 h-4" />
           </Button>
-          <Button variant="destructive" size="sm">
+          <Button size="sm" variant="destructive" onClick={() => onDelete(problem)}>
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>

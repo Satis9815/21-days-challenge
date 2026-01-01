@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-
 import {
   Select,
   SelectContent,
@@ -11,167 +11,211 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import ProblemInfoCard from "./ProblemInfoCard/ProblemInfoCard";
-import { useState } from "react";
-import ProblemAddFormModal from "./ProblemAddFormModal/ProblemAddFormModal";
 import { DeleteModal } from "@/components/shared/common/Modal/DeleteModal/DeleteModal";
+import {
+  deleteProblem,
+  getProblemsByDay,
+} from "../../../../actions/problem-actions";
+import { getAllDays } from "../../../../actions/day-actions";
+import ProblemFormModal from "./ProblemAddFormModal/ProblemAddFormModal";
 
-interface ProblemDataInterface {
-  id: number;
+export interface Problem {
+  _id: string;
   name: string;
   description: string;
-  difficulty: "Easy" | "Medium" | "Hard";
   category: string;
+  difficulty: "Easy" | "Medium" | "Hard";
   solution: string;
 }
 
-const dummyProblemsData: ProblemDataInterface[] = [
-  {
-    id: 1,
-    name: "Print Numbers 1 to N",
-    description: "Print all numbers from 1 to N",
-    difficulty: "Easy",
-    category: "Loops",
-    solution: `function printOneToN(num) {
-  let result = "";
-  for (let i = 1; i <= num; i++) {
-    result += i + "\\n";
-  }
-  return result;
+interface DayOption {
+  _id: string;
+  date?: string;
+  title?: string;
 }
-
-// Alternative: using Array
-function printOneToNArray(num) {
-  return Array.from({length: num}, (_, i) => i + 1).join("\\n");
-}
-
-// Example: printOneToN(5) outputs:
-// 1
-// 2
-// 3
-// 4
-// 5`,
-  },
-  {
-    id: 2,
-    name: "Print N to 1 (Reverse)",
-    description: "Print all numbers from N to 1 in reverse",
-    difficulty: "Easy",
-    category: "Loops",
-    solution: `function printNToOne(num) {
-  let result = "";
-  for (let i = 1; i <= num; i++) {
-    result += (num - (i - 1)) + "\\n";
-  }
-  return result;
-}
-
-// Alternative: simpler approach
-function printNToOneSimple(num) {
-  let result = "";
-  for (let i = num; i >= 1; i--) {
-    result += i + "\\n";
-  }
-  return result;
-}
-
-// Example: printNToOne(5) outputs:
-// 5
-// 4
-// 3
-// 2
-// 1`,
-  },
-  {
-    id: 3,
-    name: "Print Even Numbers 1 to N",
-    description: "Print all even numbers between 1 and N",
-    difficulty: "Easy",
-    category: "Loops",
-    solution: `function printEvenNumbers(num) {
-  let result = "";
-  for (let i = 1; i <= num; i++) {
-    if (i % 2 === 0) {
-      result += i + "\\n";
-    }
-  }
-  return result;
-}
-
-// More optimized
-function printEvenNumbersOptimized(num) {
-  let result = "";
-  for (let i = 2; i <= num; i += 2) {
-    result += i + "\\n";
-  }
-  return result;
-}
-
-// Example: printEvenNumbers(10) outputs:
-// 2
-// 4
-// 6
-// 8
-// 10`,
-  },
-];
 
 export function ProblemsManager() {
-  const [openProblemAddFormModal, setOpenProblemAddFormModal] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(true);
+  const [dayId, setDayId] = useState<string>("");
+  const [days, setDays] = useState<DayOption[]>([]);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
+  const [mode, setMode] = useState<"add" | "edit" | "view">("add");
+  const [openForm, setOpenForm] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleDelete = () => {
-    console.log("Deleting...");
+  useEffect(() => {
+    const fetchDays = async () => {
+      try {
+        setLoading(true);
+        const allDays = await getAllDays();
+
+        if (allDays && allDays.length > 0) {
+          setDays(allDays);
+          setDayId(allDays[0]._id);
+        } else {
+          setDays([]);
+          setDayId("");
+        }
+      } catch (err) {
+        console.error("Error fetching days:", err);
+        setDays([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDays();
+  }, []);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      if (!dayId) {
+        setProblems([]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const probs = await getProblemsByDay(dayId);
+        setProblems(probs || []);
+      } catch (err) {
+        console.error("Error fetching problems:", err);
+        setProblems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProblems();
+  }, [dayId]);
+
+  const refreshProblems = async () => {
+    if (dayId) {
+      try {
+        const probs = await getProblemsByDay(dayId);
+        setProblems(probs || []);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleModalClose = () => {
+    setOpenForm(false);
+    setSelectedProblem(null);
+    setMode("add");
+    refreshProblems();
   };
 
   return (
     <>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Manage Problems</h2>
-          <div className="flex gap-2">
-            <Select>
-              <SelectTrigger className="w-48">
-                <SelectValue defaultValue={"Day-01"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">Day-01</SelectItem>
-                <SelectItem value="2">Day-02</SelectItem>
-                <SelectItem value="3">Day-03</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              className="gap-2"
-              onClick={() => setOpenProblemAddFormModal(true)}
-            >
-              <Plus className="w-4 h-4" />
-              Add Problem
-            </Button>
-          </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-2xl font-bold">Manage Problems</h2>
+
+        <div className="w-full sm:w-80">
+          <Select
+            value={dayId}
+            onValueChange={setDayId}
+            disabled={days.length === 0}
+          >
+            <SelectTrigger>
+              <SelectValue
+                placeholder={
+                  days.length === 0
+                    ? "No days available"
+                    : "Select a day to manage problems"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {days.map((day) => (
+                <SelectItem key={day._id} value={day._id}>
+                  {day.title || day.date || `Day ${day._id.slice(-6)}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
+        {dayId && (
+          <Button
+            onClick={() => {
+              setMode("add");
+              setSelectedProblem(null);
+              setOpenForm(true);
+            }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Problem
+          </Button>
+        )}
+      </div>
+
+      {loading ? (
+        <div className="text-center py-12">Loading...</div>
+      ) : !dayId ? (
+        <div className="text-center py-12 text-muted-foreground">
+          {days.length === 0
+            ? "No days found. Create a day first."
+            : "Please select a day to view its problems."}
+        </div>
+      ) : problems.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground">
+          No problems yet for this day.
+          <br />
+          Click Add Problem to create the first one!
+        </div>
+      ) : (
         <div className="grid gap-4">
-          {dummyProblemsData.map((problem) => (
+          {problems.map((p) => (
             <ProblemInfoCard
-              category={problem.category}
-              description={problem.description}
-              difficulty={"Easy"}
-              name={problem.name}
-              key={problem.id}
+              key={p._id}
+              problem={p}
+              onEdit={(p) => {
+                setMode("edit");
+                setSelectedProblem(p);
+                setOpenForm(true);
+              }}
+              onView={(p) => {
+                setMode("view");
+                setSelectedProblem(p);
+                setOpenForm(true);
+              }}
+              onDelete={(p) => {
+                setSelectedProblem(p);
+                setOpenDelete(true);
+              }}
             />
           ))}
         </div>
-      </div>
+      )}
+
       <DeleteModal
-        isOpen={openDeleteModal}
-        title="Delete Item"
-        description="Are you sure you want to delete this item? This action cannot be undone."
-        onClose={() => setOpenDeleteModal(false)}
-        onConfirm={handleDelete}
+        isOpen={openDelete}
+        title="Delete Problem"
+        description="This action cannot be undone."
+        onClose={() => {
+          setOpenDelete(false);
+          setSelectedProblem(null);
+        }}
+        onConfirm={async () => {
+          if (selectedProblem && dayId) {
+            await deleteProblem(dayId, selectedProblem._id);
+            await refreshProblems();
+          }
+          setOpenDelete(false);
+          setSelectedProblem(null);
+        }}
         loading={false}
       />
-      <ProblemAddFormModal
-        openProblemAddFormModal={openProblemAddFormModal}
-        setOpenProblemAddFormModal={setOpenProblemAddFormModal}
+
+      <ProblemFormModal
+        open={openForm}
+        onClose={handleModalClose}
+        mode={mode}
+        dayId={dayId}
+        problem={selectedProblem}
       />
     </>
   );
