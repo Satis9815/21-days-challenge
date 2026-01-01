@@ -1,5 +1,5 @@
 import { DaysManager } from "@/components/Admin/DaysManager/DaysManager";
-import { getAllDays } from "../../../../actions/day-actions";
+import { getAllDays } from "../../../actions/day-actions";
 
 const DaysManagerPage = async() => {
     const days = await getAllDays();
