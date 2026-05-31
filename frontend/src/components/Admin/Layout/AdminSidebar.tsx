@@ -16,6 +16,12 @@ export function AdminSidebar({ onClose, isOpen }: SidebarProps) {
   const pathname = usePathname();
   const menuItems = [
     {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: Calendar,
+      href: ROUTES.ADMIN_DASHBOARD,
+    },
+    {
       id: "days",
       label: "Days",
       icon: Calendar,
